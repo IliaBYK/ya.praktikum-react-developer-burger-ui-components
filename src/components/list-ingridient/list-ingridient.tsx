@@ -17,10 +17,7 @@ export default function ListIngridient({ title, items }: Props) {
       <div className={`${styles.cards__container} pl-4 pr-4 mb-10`}>
         {items?.map(item => {
           return <Card
-            src={item.image}
-            counter={1}
-            price={item.price}
-            name={item.name}
+            {...item}
             key={item._id}
           />
         })}

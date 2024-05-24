@@ -1,0 +1,50 @@
+.popup {
+  opacity: 0;
+  visibility: hidden;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  background: rgba(0, 0, 0, .5);
+}
+
+.popup_visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup__container {
+  width: 720px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  background: rgb(28, 28, 33);
+  position: relative;
+  border-radius: 40px;
+}
+
+.popup__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup__btn {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.popup__name {
+  align-self: center;
+}
+
+.popup__compound {
+  display: flex;
+  margin: 0 auto;
+  column-gap: 20px;
+}
