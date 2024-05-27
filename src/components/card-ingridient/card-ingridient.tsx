@@ -1,26 +1,31 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./card-ingridient.module.css"
-import crator from "../../images/crator.png"
-import PopupIngridient from "../popup-ingridient/popup-ingridient"
 import { useState } from "react"
+import Modal from "../modal/modal"
+import IngredientDetails from "../ingredient-details/ingredient-details"
 
 interface Props {
-  image?: string
-  counter?: number
-  price?: number
-  name?: string
-  proteins: number
-  fat: number
+  counter: number
+  _id: string;
+  name: string;
+  type: string;
+  proteins: number;
+  fat: number;
   carbohydrates: number;
-  calories: number
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  __v: number;
 }
 
 export default function Card(
   {
-    image = crator,
-    counter = 1,
-    price=20,
-    name="Краторная булка N-200i",
+    counter,
+    image,
+    price,
+    name,
     proteins,
     fat,
     carbohydrates,
@@ -28,6 +33,7 @@ export default function Card(
   }: Props) {
 
   const [isOpen, setIsOpen] = useState(false);
+  const details = [calories, proteins, fat, carbohydrates];
 
   const openPopup = () => {
     setIsOpen(true)
@@ -50,16 +56,19 @@ export default function Card(
           {name}
         </p>
       </div>
-      <PopupIngridient 
-        src={image} 
-        name={name} 
-        proteins={proteins} 
-        fats={fat} 
-        carbs={carbohydrates} 
-        calories={calories} 
-        isOpen={isOpen} 
-        close={closePopup}
-      />
+      {isOpen
+      &&
+      <Modal close={closePopup} title="Детали ингридиента">
+        <IngredientDetails
+          carbohydrates={carbohydrates} 
+          calories={calories} 
+          proteins={proteins} 
+          fat={fat} 
+          image={image}
+          name={name}
+        />
+      </Modal>
+      }
     </>
   )
 }

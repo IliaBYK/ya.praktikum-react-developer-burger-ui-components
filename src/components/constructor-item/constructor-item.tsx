@@ -5,7 +5,7 @@ import crator from "../../images/crator.png"
 //передаем первая или нет карточка, в зависимости от этого рисуем кнопку перед нет
 
 interface Props {
-  position?: "top" | "bottom"
+  position?: "top" | "bottom" | undefined
   isLocked?: boolean
   text?: string
   price?: number
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function ConstructorItem({
-  position = "top",
+  position,
   isLocked,
   text = "Краторная булка N-200i (верх)",
   price = 200,
@@ -21,7 +21,11 @@ export default function ConstructorItem({
   }: Props) {
   return (
     <div className={styles.container}>
-      {position === undefined && <DragIcon type="primary" />}
+      {position === undefined
+        &&
+        <button className={styles.container__btn}>
+          <DragIcon type="primary" />  
+        </button>}
       <ConstructorElement
         type={position}
         isLocked={isLocked}

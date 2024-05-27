@@ -16,7 +16,7 @@ export default function BurgerIngridients() {
     }
 
   return (
-    <main className={styles.burger}>
+    <section className={styles.burger}>
       <BurgerHeader />
 
       <section className={styles.burger__left}>
@@ -24,6 +24,6 @@ export default function BurgerIngridients() {
         {filterItems(ingridients, "sauce")}
         {filterItems(ingridients, "main")}
       </section>
-    </main>
+    </section>
   )
 }

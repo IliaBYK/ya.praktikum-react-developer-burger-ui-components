@@ -15,10 +15,11 @@ export default function ListIngridient({ title, items }: Props) {
       </h2>
 
       <div className={`${styles.cards__container} pl-4 pr-4 mb-10`}>
-        {items?.map(item => {
+        {items?.map(currentIngredient => {
           return <Card
-            {...item}
-            key={item._id}
+          counter={1}
+          key={currentIngredient._id}
+          {...currentIngredient}
           />
         })}
       </div>
