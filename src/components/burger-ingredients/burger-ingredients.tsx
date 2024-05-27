@@ -3,9 +3,15 @@ import ListIngridient from "../list-ingridient/list-ingridient";
 import ingridients from "../../utils/ingridients";
 import BurgerHeader from "../burger-header/burger-header";
 
-export default function BurgerIngridients() {
+interface Props {
+  ingridient?: keyof typeof ingridients
+}
+
+//Не совсем понятно как типизировать то, чего нет на данном этапе, нужно расписать все свойства ингридиента?
+
+export default function BurgerIngridients({ ingridient }: Props) {
   const filterItems = (array: typeof ingridients, type: string) => {
-    const mainItems = array.filter(item => item.type === type);
+    const mainItems = array.filter((item) => item.type === type);
       return <ListIngridient title={
           type === "main"
           ? "Начинки"
