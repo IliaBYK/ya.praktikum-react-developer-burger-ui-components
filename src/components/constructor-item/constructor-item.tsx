@@ -7,17 +7,17 @@ import crator from "../../images/crator.png"
 interface Props {
   position?: "top" | "bottom" | undefined
   isLocked?: boolean
-  text?: string
-  price?: number
-  thumbnail?: string
+  name: string
+  price: number
+  image: string
 }
 
 export default function ConstructorItem({
   position,
   isLocked,
-  text = "Краторная булка N-200i (верх)",
-  price = 200,
-  thumbnail = crator
+  name,
+  price,
+  image
   }: Props) {
   return (
     <div className={styles.container}>
@@ -29,9 +29,9 @@ export default function ConstructorItem({
       <ConstructorElement
         type={position}
         isLocked={isLocked}
-        text={text}
+        text={name}
         price={price}
-        thumbnail={thumbnail}
+        thumbnail={image}
         extraClass={styles.container__item}
       />
     </div>

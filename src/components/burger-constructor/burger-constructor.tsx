@@ -1,25 +1,34 @@
 import styles from "./burger-constructor.module.css"
+import { Ingridient } from "../../types/types";
 import ConfirmOrder from "../confirm-order/confirm-order"
 import ConstructorItem from "../constructor-item/constructor-item"
-import bunBottom from "../../images/bun-bottom.png"
-import sauce from "../../images/sauce.png"
-import meet from "../../images/meet.png"
+import { useEffect, useState } from "react";
 
 interface Props {
-  data: never[]
+  order: Ingridient[]
 }
 
-export default function BurgerConstructor({ data }: Props) {
+export default function BurgerConstructor({ order }: Props) {
+  const [cost, setCost] = useState(0);
+
+  useEffect(() => {
+    setCost(order.map(item => item.price).reduce((acc, sum) => { return acc += sum}, 0))
+  }, [])
+
   return (
     <section className={`${styles.main} pt-25 pr-4 pl-4`}>
       <div className={`${styles.main__container} mb-10`}>
-        <ConstructorItem position="top"isLocked={true}/>
-        <ConstructorItem thumbnail={sauce}/>
-        <ConstructorItem thumbnail={meet}/>
-        <ConstructorItem position="bottom" thumbnail={bunBottom} isLocked={true}/>
+        {order.map(item => {
+          if(item.type === "bun" && order.indexOf(item) === 0) {
+            return <ConstructorItem {...item} name={`${item.name} (верх)`} position="top" isLocked/>
+          } else if(order.indexOf(item) === order.length - 1 && item.type === "bun") {
+            return <ConstructorItem {...item} name={`${item.name} (низ)`} position="bottom" isLocked/>
+          }
+          return <ConstructorItem {...item}/>
+        })}
       </div>
 
-      <ConfirmOrder price="100"/>
+      <ConfirmOrder price={cost}/>
     </section>
   )
 }
