@@ -1,0 +1,9 @@
+.confirm {
+  display: flex;
+  align-items: center;
+  margin: auto 0 0 auto;
+}
+
+.confirm__img {
+  display: inline-block;
+}

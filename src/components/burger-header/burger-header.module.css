@@ -1,0 +1,11 @@
+.header {
+  z-index: 100;
+}
+
+.header__menu {
+  padding: 0;
+  margin-top: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
