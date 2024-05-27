@@ -8,6 +8,7 @@
 .details__compound {
   display: flex;
   column-gap: 20px;
+  margin: 0 auto;
 }
 
 .details__img {

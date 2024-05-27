@@ -4,12 +4,10 @@ import ingridients from "../../utils/ingridients";
 import BurgerHeader from "../burger-header/burger-header";
 
 interface Props {
-  ingridient?: keyof typeof ingridients
+  data: never[]
 }
 
-//Не совсем понятно как типизировать то, чего нет на данном этапе, нужно расписать все свойства ингридиента?
-
-export default function BurgerIngridients({ ingridient }: Props) {
+export default function BurgerIngridients({ data }: Props) {
   const filterItems = (array: typeof ingridients, type: string) => {
     const mainItems = array.filter((item) => item.type === type);
       return <ListIngridient title={
@@ -26,9 +24,9 @@ export default function BurgerIngridients({ ingridient }: Props) {
       <BurgerHeader />
 
       <section className={styles.burger__left}>
-        {filterItems(ingridients, "bun")}
-        {filterItems(ingridients, "sauce")}
-        {filterItems(ingridients, "main")}
+        {filterItems(data, "bun")}
+        {filterItems(data, "sauce")}
+        {filterItems(data, "main")}
       </section>
     </section>
   )

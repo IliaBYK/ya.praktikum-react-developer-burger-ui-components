@@ -5,7 +5,11 @@ import bunBottom from "../../images/bun-bottom.png"
 import sauce from "../../images/sauce.png"
 import meet from "../../images/meet.png"
 
-export default function BurgerConstructor() {
+interface Props {
+  data: never[]
+}
+
+export default function BurgerConstructor({ data }: Props) {
   return (
     <section className={`${styles.main} pt-25 pr-4 pl-4`}>
       <div className={`${styles.main__container} mb-10`}>
