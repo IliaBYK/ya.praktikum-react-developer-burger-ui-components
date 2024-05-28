@@ -8,7 +8,12 @@ function App() {
 
   useEffect(() => {
     fetch(BASE_PATH)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status}`);
+      })
       .then(data => setData(data.data))
       .catch(err => console.log(err))
   }, [])

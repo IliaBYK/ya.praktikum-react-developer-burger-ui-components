@@ -3,37 +3,21 @@ import styles from "./card-ingridient.module.css"
 import { useState } from "react"
 import Modal from "../modal/modal"
 import IngredientDetails from "../ingredient-details/ingredient-details"
+import { Ingridient } from "../../types/types"
 
 interface Props {
+  ingridient: Ingridient
   counter: number
-  _id: string;
-  name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
 }
 
 export default function Card(
   {
-    counter,
-    image,
-    price,
-    name,
-    proteins,
-    fat,
-    carbohydrates,
-    calories
+    ingridient,
+    counter
   }: Props) {
 
   const [isOpen, setIsOpen] = useState(false);
-  const details = [calories, proteins, fat, carbohydrates];
+  const {calories, proteins, fat, carbohydrates} = ingridient;
 
   const openPopup = () => {
     setIsOpen(true)
@@ -47,13 +31,13 @@ export default function Card(
     <>
       <div className={`${styles.card}`} onClick={openPopup}>
         <Counter count={counter} size="default" extraClass="m-1" />
-        <img className={`${styles.card__img} mb-1`} src={image} alt="Изображение ингридиента" />
+        <img className={`${styles.card__img} mb-1`} src={ingridient.image} alt="Изображение ингридиента" />
         <div className={`${styles.card__price}`}>
-          <span className="text text_type_digits-default mr-2">{price}</span>
+          <span className="text text_type_digits-default mr-2">{ingridient.price}</span>
           <CurrencyIcon type="primary" />
         </div>
         <p className={`text text_type_main-small mt-2 ${styles.card__description}`}>
-          {name}
+          {ingridient.name}
         </p>
       </div>
       {isOpen
@@ -64,8 +48,8 @@ export default function Card(
           calories={calories} 
           proteins={proteins} 
           fat={fat} 
-          image={image}
-          name={name}
+          image={ingridient.image}
+          name={ingridient.name}
         />
       </Modal>
       }

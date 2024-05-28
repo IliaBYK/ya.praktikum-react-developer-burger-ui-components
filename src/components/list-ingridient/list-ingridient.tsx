@@ -19,7 +19,7 @@ export default function ListIngridient({ title, items }: Props) {
           return <Card
           counter={1}
           key={currentIngredient._id}
-          {...currentIngredient}
+          ingridient={currentIngredient}
           />
         })}
       </div>

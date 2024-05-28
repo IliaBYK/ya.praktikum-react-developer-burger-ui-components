@@ -20,11 +20,11 @@ export default function BurgerConstructor({ order }: Props) {
       <div className={`${styles.main__container} mb-10`}>
         {order.map(item => {
           if(item.type === "bun" && order.indexOf(item) === 0) {
-            return <ConstructorItem {...item} name={`${item.name} (верх)`} position="top" isLocked/>
+            return <ConstructorItem {...item} name={`${item.name} (верх)`} position="top" isLocked key={item._id}/>
           } else if(order.indexOf(item) === order.length - 1 && item.type === "bun") {
-            return <ConstructorItem {...item} name={`${item.name} (низ)`} position="bottom" isLocked/>
+            return <ConstructorItem {...item} name={`${item.name} (низ)`} position="bottom" isLocked key={`${item._id}bottom`}/>
           }
-          return <ConstructorItem {...item}/>
+          return <ConstructorItem {...item} key={item._id}/>
         })}
       </div>
 
