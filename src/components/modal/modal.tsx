@@ -1,6 +1,6 @@
 import styles from "./modal.module.css"
 import closeBtn from "../../images/closeBtn.png"
-import { ReactElement } from "react"
+import { ReactElement, useEffect } from "react"
 import ModalOverlay from "../modal-overlay/modal-overlay"
 import { createPortal } from "react-dom"
 
@@ -19,6 +19,16 @@ export default function Modal({
     children,
     confirm
   }: Props) {
+  useEffect(() => {
+      const closeWithKey = (e: KeyboardEvent) => {
+        if(e.key === "Escape"){
+          close()
+        }
+      }
+      window.addEventListener('keydown', closeWithKey)
+    return () => window.removeEventListener('keydown', closeWithKey)
+  },[])
+
   return createPortal(
     (
     <ModalOverlay close={close}>
