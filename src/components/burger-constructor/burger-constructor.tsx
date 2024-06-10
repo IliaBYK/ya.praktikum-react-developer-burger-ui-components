@@ -1,5 +1,4 @@
 import { useDrop } from "react-dnd";
-import { useEffect, useState } from "react";
 import uniqid from 'uniqid';
 import { ConstructorItemIgridient } from "../../types/types";
 import styles from "./burger-constructor.module.css"
@@ -15,7 +14,6 @@ interface Props {
 
 export default function BurgerConstructor({ order, onDropHandler, handleDelete }: Props) {
   const { constructorItems } = useAppSelector(store => store.constructorItems)
-  const [cost, setCost] = useState(0);
 
   /* useEffect(() => {
     dispatch(addConstructorItem(order))
@@ -31,10 +29,6 @@ export default function BurgerConstructor({ order, onDropHandler, handleDelete }
     })
   });
 
-  useEffect(() => {
-    setCost(constructorItems.reduce((acc, item) => acc += item.price * item.qty!, 0))
-  }, [constructorItems])
-
   return (
     <section className={`${styles.main}`}>
       <div className={`${styles.main__container} mb-10 pt-25 pr-4 pl-4 ${isHover && styles.main__container_green}`} ref={dropTarget}>
@@ -48,7 +42,7 @@ export default function BurgerConstructor({ order, onDropHandler, handleDelete }
         })}
       </div>
         {/* <p>{JSON.stringify(constructorItems)}</p> */}
-      <ConfirmOrder price={cost}/>
+      <ConfirmOrder/>
     </section>
   )
 }
