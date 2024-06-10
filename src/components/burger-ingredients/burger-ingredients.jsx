@@ -1,14 +1,20 @@
 import styles from "./burger-ingredients.module.css";
 import ListIngridient from "../list-ingridient/list-ingridient";
-import ingridients from "../../utils/ingridients";
 import BurgerHeader from "../burger-header/burger-header";
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { fetchIngridients } from "../../services/ingridients/ingridientsSlice";
 
-interface Props {
-  data: never[]
-}
+export default function BurgerIngridients() {
+  const dispatch = useAppDispatch();
 
-export default function BurgerIngridients({ data }: Props) {
-  const filterItems = (array: typeof ingridients, type: string) => {
+  const { ingridients } = useAppSelector(store => store.ingridients);
+
+  useEffect(() => {
+    dispatch(fetchIngridients())
+  }, [dispatch]);
+
+  const filterItems = (array, type) => {
     const mainItems = array.filter((item) => item.type === type);
       return <ListIngridient title={
           type === "main"
@@ -24,9 +30,9 @@ export default function BurgerIngridients({ data }: Props) {
       <BurgerHeader />
 
       <section className={styles.burger__left}>
-        {filterItems(data, "bun")}
-        {filterItems(data, "sauce")}
-        {filterItems(data, "main")}
+        {filterItems(ingridients, "bun")}
+        {filterItems(ingridients, "sauce")}
+        {filterItems(ingridients, "main")}
       </section>
     </section>
   )

@@ -1,24 +1,24 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./constructor-item.module.css"
-import crator from "../../images/crator.png"
-
-//передаем первая или нет карточка, в зависимости от этого рисуем кнопку перед нет
+import { ConstructorItemIgridient } from "../../types/types"
 
 interface Props {
+  item: ConstructorItemIgridient
+  name: string
   position?: "top" | "bottom" | undefined
   isLocked?: boolean
-  name: string
-  price: number
-  image: string
+  handleClose: (id: string) => void
 }
 
 export default function ConstructorItem({
+  item,
+  name,
   position,
   isLocked,
-  name,
-  price,
-  image
+  handleClose
   }: Props) {
+  const { price, image, _id } = item; 
+
   return (
     <div className={styles.container}>
       {position === undefined
@@ -33,6 +33,7 @@ export default function ConstructorItem({
         price={price}
         thumbnail={image}
         extraClass={styles.container__item}
+        handleClose={() => handleClose(_id)}
       />
     </div>
   )

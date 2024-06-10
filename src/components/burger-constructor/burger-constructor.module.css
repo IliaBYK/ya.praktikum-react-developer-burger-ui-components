@@ -12,4 +12,10 @@
   width: 600px;
   height: 80vh;
   overflow: auto;
+  box-sizing: border-box;
+}
+
+.main__container_green {
+  border: 1px solid green;
+  border-radius: 20px;
 }

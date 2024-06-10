@@ -17,7 +17,6 @@ export default function ListIngridient({ title, items }: Props) {
       <div className={`${styles.cards__container} pl-4 pr-4 mb-10`}>
         {items?.map(currentIngredient => {
           return <Card
-          counter={1}
           key={currentIngredient._id}
           ingridient={currentIngredient}
           />
