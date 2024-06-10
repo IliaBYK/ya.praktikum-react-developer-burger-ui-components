@@ -25,9 +25,13 @@ export default function Card({ ingridient }: Props) {
   })
 
   useEffect(() => {
+    constructorItems.find(item => item._id === _id)
+    ?
     constructorItems.map(item => {
-      return item._id === _id && setCounter(item.qty || 0)
+      return item._id === _id && setCounter(item.qty!)
     })
+    :
+    setCounter(0)
   }, [constructorItems, _id])
 
   const openPopup = () => {

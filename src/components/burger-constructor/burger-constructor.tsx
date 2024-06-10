@@ -41,7 +41,7 @@ export default function BurgerConstructor({ order, onDropHandler, handleDelete }
           return <ConstructorItem name={item.name} item={item} key={uniqid()} handleClose={handleDelete}/>
         })}
       </div>
-        {/* <p>{JSON.stringify(constructorItems)}</p> */}
+        <p>{JSON.stringify(constructorItems)}</p>
       <ConfirmOrder/>
     </section>
   )

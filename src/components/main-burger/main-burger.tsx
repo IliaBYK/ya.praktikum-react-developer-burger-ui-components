@@ -19,7 +19,11 @@ export default function MainBurger() {
   };
 
   const hadleDelete = (id: string) => {
-    constructorItems.find(item => item._id === id)?.qty! > 1 ? dispatch(decreaseItem(id)) : dispatch(deleteItem(id))
+    if(constructorItems.find(item => item._id === id)?.qty! > 1) dispatch(decreaseItem(id))
+    else {
+      dispatch(decreaseItem(id));
+      dispatch(deleteItem(id))
+    }
   }
 
   return (
