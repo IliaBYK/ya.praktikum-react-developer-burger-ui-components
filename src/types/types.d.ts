@@ -24,6 +24,7 @@ export type InitialStateIngridients =  {
 }
 
 export type InitialStateConstructor =  {
+  bun: ConstructorItemIgridient | null,
     constructorItems: ConstructorItemIgridient[];
     constructorItemsRequest: boolean;
     constructorItemsFailed: boolean;

@@ -17,7 +17,7 @@ export default function Card({ ingridient }: Props) {
 
   const {calories, proteins, fat, carbohydrates, type, _id} = ingridient;
 
-  const { constructorItems } = useAppSelector(store => store.constructorItems)
+  const { constructorItems, bun } = useAppSelector(store => store.constructorItems)
 
   const [, dragRef] = useDrag({
     type: type,
@@ -25,14 +25,17 @@ export default function Card({ ingridient }: Props) {
   })
 
   useEffect(() => {
-    constructorItems.find(item => item._id === _id)
+    if(type === "bun") {
+      bun?._id === _id ? setCounter(bun?.qty!) : setCounter(0)
+    }
+    else constructorItems.find(item => item._id === _id)
     ?
     constructorItems.map(item => {
       return item._id === _id && setCounter(item.qty!)
     })
     :
     setCounter(0)
-  }, [constructorItems, _id])
+  }, [constructorItems, _id, type, bun?.qty, bun?._id])
 
   const openPopup = () => {
     setIsOpen(true)

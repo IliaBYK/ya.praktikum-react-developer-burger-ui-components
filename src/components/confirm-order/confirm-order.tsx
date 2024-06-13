@@ -10,11 +10,11 @@ export default function ConfirmOrder() {
   const [isOpen, setIsOpen] = useState(false);
   const [cost, setCost] = useState(0)
 
-  const { constructorItems } = useAppSelector(store => store.constructorItems)
+  const { constructorItems, bun } = useAppSelector(store => store.constructorItems)
 
   useMemo(() => {
-    setCost(constructorItems.reduce((acc, item) => acc += item.price * item.qty!, 0))
-  }, [constructorItems])
+    setCost(constructorItems.reduce((acc, item) => acc += item.price * item.qty!, 0) + (bun?.qty! ? bun?.qty! * bun.price : 0))
+  }, [bun?.price, bun?.qty, constructorItems])
 
   const openPopup = () => {
     setIsOpen(true)

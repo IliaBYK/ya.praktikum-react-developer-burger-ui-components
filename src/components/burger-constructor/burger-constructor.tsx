@@ -15,10 +15,6 @@ interface Props {
 export default function BurgerConstructor({ order, onDropHandler, handleDelete }: Props) {
   const { constructorItems } = useAppSelector(store => store.constructorItems)
 
-  /* useEffect(() => {
-    dispatch(addConstructorItem(order))
-  }, [dispatch, order]) */
-
   const [{isHover}, dropTarget] = useDrop({
     accept: ['bun', 'sauce', 'main'],
     drop(item: Ingridient) {
@@ -62,7 +58,7 @@ export default function BurgerConstructor({ order, onDropHandler, handleDelete }
             index={index}/>
         })}
       </div>
-        {/* <p>{JSON.stringify(constructorItems)}</p> */}
+        <p>{JSON.stringify(constructorItems)}</p>
       <ConfirmOrder/>
     </section>
   )

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { InitialStateConstructor } from "../../types/types";
 
 const initialState: InitialStateConstructor = {
+  bun: null,
   constructorItems: [],
   constructorItemsRequest: false,
   constructorItemsFailed: false,
@@ -11,15 +12,18 @@ const constructorSlice = createSlice({
   name: 'constructorItems',
   initialState,
   reducers: {
-    /* setConstructorItems(state, { payload }) {
-      state.constructorItems = payload
-    }, */
+    clearConstructor(state) {
+      state.constructorItems = []
+    },
     addConstructorItem(state, { payload }) {
-      const itemIndex = state.constructorItems.findIndex(item => item._id === payload._id)
+      if(payload.type === "bun") {
+        state.bun! = {...payload, qty: 2}
+      } else {
+        const itemIndex = state.constructorItems.findIndex(item => item._id === payload._id)
 
-      if(itemIndex >= 0) {
-        state.constructorItems[itemIndex].qty! += 1
-      } else  state.constructorItems.push({...payload, qty: 1})
+        if(itemIndex >= 0) state.constructorItems[itemIndex].qty! += 1
+        else  state.constructorItems.push({...payload, qty: 1})
+      }
     },
     increaseItem(state, { payload }) {
       state.constructorItems.map(item => item._id === payload._id ? item.qty! += 1 : item)
@@ -36,7 +40,7 @@ const constructorSlice = createSlice({
 });
 
 export const {
-  // setConstructorItems,
+  clearConstructor,
   addConstructorItem,
   //increaseItem,
   decreaseItem,

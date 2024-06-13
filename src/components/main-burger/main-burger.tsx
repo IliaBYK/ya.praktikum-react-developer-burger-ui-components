@@ -17,14 +17,23 @@ export default function MainBurger() {
   const handleDrop = (item: Ingridient) => {
     dispatch(addConstructorItem(item))
 
-    setDraggedElements([
+    const bun = draggedElements.find(item => item.type === "bun")
+
+    if(item.type === "bun" && !bun) {
+      setDraggedElements([
+        ...ingridients.filter(element => element._id === item._id),
+        ...draggedElements,
+      ]);
+    } else if(item.type === "bun" && bun) draggedElements.splice(draggedElements.indexOf(bun!), 1, item)
+
+    else setDraggedElements([
       ...draggedElements,
       ...ingridients.filter(element => element._id === item._id)
     ]);
   };
 
   const hadleDelete = (id: string, index: number) => {
-    draggedElements.splice(index)
+    draggedElements.splice(index, 1)
 
     dispatch(decreaseItem(id))
   }
