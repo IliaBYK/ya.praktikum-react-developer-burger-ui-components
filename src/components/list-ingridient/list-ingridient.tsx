@@ -1,10 +1,10 @@
 import Card from "../card-ingridient/card-ingridient"
 import styles from "./list-ingridient.module.css"
-import ingridients from "../../utils/ingridients"
+import { Ingridient } from "../../types/types"
 
 interface Props {
   title?: string
-  items: typeof ingridients
+  items: Ingridient[]
 }
 
 export default function ListIngridient({ title, items }: Props) {

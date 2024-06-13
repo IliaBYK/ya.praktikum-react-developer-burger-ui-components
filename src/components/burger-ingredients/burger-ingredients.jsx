@@ -10,6 +10,8 @@ export default function BurgerIngridients() {
 
   const { ingridients } = useAppSelector(store => store.ingridients);
 
+  
+
   useEffect(() => {
     dispatch(fetchIngridients())
   }, [dispatch]);

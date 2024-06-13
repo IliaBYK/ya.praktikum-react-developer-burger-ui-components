@@ -1,7 +1,7 @@
 export type Ingridient = {
   _id: string;
   name: string;
-  type: string;
+  type: "bun" | "sauce" | "main";
   proteins: number;
   fat: number;
   carbohydrates: number;

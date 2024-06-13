@@ -19,17 +19,19 @@ const constructorSlice = createSlice({
 
       if(itemIndex >= 0) {
         state.constructorItems[itemIndex].qty! += 1
-      } else state.constructorItems.push({...payload, qty: 1})
+      } else  state.constructorItems.push({...payload, qty: 1})
     },
-    /* increaseItem(state, { payload }) {
+    increaseItem(state, { payload }) {
       state.constructorItems.map(item => item._id === payload._id ? item.qty! += 1 : item)
-    }, */
+    },
     decreaseItem(state, { payload }) {
-      state.constructorItems.map(item => item._id === payload && (item.qty! -= 1))
+      if(state.constructorItems.find(item => item._id === payload)?.qty! > 1) {
+        state.constructorItems.map(item => item._id === payload && (item.qty! -= 1))
+      } else state.constructorItems = state.constructorItems.filter(item => item._id !== payload)
     },
-    deleteItem(state, { payload }) {
+    /* deleteItem(state, { payload }) {
       state.constructorItems = state.constructorItems.filter(item => item._id !== payload)
-    },
+    }, */
   },
 });
 
@@ -38,7 +40,7 @@ export const {
   addConstructorItem,
   //increaseItem,
   decreaseItem,
-  deleteItem
+  //deleteItem
 } = constructorSlice.actions;
 
 export default constructorSlice.reducer;

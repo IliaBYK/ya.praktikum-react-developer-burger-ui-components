@@ -21,7 +21,7 @@ export default function Card({ ingridient }: Props) {
 
   const [, dragRef] = useDrag({
     type: type,
-    item: {_id}
+    item: {...ingridient}
   })
 
   useEffect(() => {

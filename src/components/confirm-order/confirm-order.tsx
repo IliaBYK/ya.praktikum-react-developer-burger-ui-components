@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./confirm-order.module.css"
 import Modal from "../modal/modal"
@@ -12,7 +12,7 @@ export default function ConfirmOrder() {
 
   const { constructorItems } = useAppSelector(store => store.constructorItems)
 
-  useEffect(() => {
+  useMemo(() => {
     setCost(constructorItems.reduce((acc, item) => acc += item.price * item.qty!, 0))
   }, [constructorItems])
 
