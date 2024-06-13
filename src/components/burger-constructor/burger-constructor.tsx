@@ -8,11 +8,12 @@ import { useAppSelector } from "../../services/store";
 
 interface Props {
   order: ConstructorItemIgridient[]
+  bun: ConstructorItemIgridient | null
   onDropHandler: (arg0: Ingridient) => void
   handleDelete: (id: string, index: number) => void
 }
 
-export default function BurgerConstructor({ order, onDropHandler, handleDelete }: Props) {
+export default function BurgerConstructor({ order, bun, onDropHandler, handleDelete }: Props) {
   const { constructorItems } = useAppSelector(store => store.constructorItems)
 
   const [{isHover}, dropTarget] = useDrop({
@@ -30,6 +31,19 @@ export default function BurgerConstructor({ order, onDropHandler, handleDelete }
       <div 
         className={`${styles.main__container} mb-10 pt-25 pr-4 pl-4 ${isHover && styles.main__container_green}`} 
         ref={dropTarget}>
+        {bun
+          && 
+          <ConstructorItem 
+            ingridient={bun} 
+            name={`${bun.name} (верх)`} 
+            position="top" 
+            isLocked 
+            key={uniqid()}
+            handleClose={handleDelete}
+            index={0}/>
+        }
+        
+        
         {order.map((item, index) => {
           if(item.type === "bun" && order.indexOf(item) === 0) {
             return <ConstructorItem 
@@ -57,6 +71,18 @@ export default function BurgerConstructor({ order, onDropHandler, handleDelete }
             handleClose={handleDelete}
             index={index}/>
         })}
+
+        {bun
+          && 
+          <ConstructorItem 
+            ingridient={bun} 
+            name={`${bun.name} (низ)`} 
+            position="bottom" 
+            isLocked 
+            key={uniqid()}
+            handleClose={handleDelete}
+            index={-1}/>
+        }
       </div>
         <p>{JSON.stringify(constructorItems)}</p>
       <ConfirmOrder/>

@@ -4,9 +4,11 @@ import styles from "./confirm-order.module.css"
 import Modal from "../modal/modal"
 import diamond from "../../images/diamond.svg"
 import OrderDetails from "../order-details/order-details"
-import { useAppSelector } from "../../services/store"
+import { useAppDispatch, useAppSelector } from "../../services/store"
+import { clearConstructor } from "../../services/constructor/constructorItemsSlice"
 
 export default function ConfirmOrder() {
+  const dispatch = useAppDispatch()
   const [isOpen, setIsOpen] = useState(false);
   const [cost, setCost] = useState(0)
 
@@ -24,6 +26,10 @@ export default function ConfirmOrder() {
     setIsOpen(false)
   }
 
+  const clearCart = () => {
+    dispatch(clearConstructor())
+  }
+
   return (
     <>
       <footer className={styles.confirm}>
@@ -36,6 +42,13 @@ export default function ConfirmOrder() {
           onClick={openPopup}
         >
           Оформить заказ
+        </Button>
+        <Button 
+          htmlType="button" 
+          type="secondary" 
+          size="medium"
+          onClick={clearCart}>
+          Очистить корзину
         </Button>
       </footer>
       {isOpen

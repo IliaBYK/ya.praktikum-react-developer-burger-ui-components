@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../services/store";
 import { addConstructorItem, decreaseItem } from "../../services/constructor/constructorItemsSlice";
 
 export default function MainBurger() {
-  const { constructorItems } = useAppSelector(store => store.constructorItems)
+  const { constructorItems, bun } = useAppSelector(store => store.constructorItems)
   const { ingridients } = useAppSelector(store => store.ingridients)
   const dispatch = useAppDispatch()
   const [draggedElements, setDraggedElements] = useState<Ingridient[]>(constructorItems);
@@ -42,7 +42,7 @@ export default function MainBurger() {
     <main className={styles.main}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngridients />
-        <BurgerConstructor order={draggedElements} onDropHandler={handleDrop} handleDelete={hadleDelete} />
+        <BurgerConstructor order={constructorItems} bun={bun} onDropHandler={handleDrop} handleDelete={hadleDelete} />
       </DndProvider>
     </main>
   )
