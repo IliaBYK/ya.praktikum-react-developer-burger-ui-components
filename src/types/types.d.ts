@@ -25,9 +25,9 @@ export type InitialStateIngridients =  {
 
 export type InitialStateConstructor =  {
   bun: ConstructorItemIgridient | null,
-    constructorItems: ConstructorItemIgridient[];
-    constructorItemsRequest: boolean;
-    constructorItemsFailed: boolean;
+  constructorItems: ConstructorItemIgridient[];
+  constructorItemsRequest: boolean;
+  constructorItemsFailed: boolean;
 }
 
 export type InitialStateModalItem =  {
@@ -40,6 +40,10 @@ export type InitialStateTab =  {
 
 export type InitialStateOrderNumber =  {
     orderNumber: number;
+}
+
+export type InitialStateOrderCost =  {
+    orderCost: number;
 }
 
 export interface Res extends Response {

@@ -10,15 +10,14 @@ export default function BurgerIngridients() {
 
   const { ingridients } = useAppSelector(store => store.ingridients);
 
-  
-
   useEffect(() => {
     dispatch(fetchIngridients())
   }, [dispatch]);
 
   const filterItems = (array, type) => {
     const mainItems = array.filter((item) => item.type === type);
-      return <ListIngridient title={
+      return <ListIngridient 
+        title={
           type === "main"
           ? "Начинки"
           : type === "bun" ? "Булки" : "Соусы"
