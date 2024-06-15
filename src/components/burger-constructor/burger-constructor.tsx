@@ -107,7 +107,7 @@ export default function BurgerConstructor() {
             onDropHandler={handleDrop} *//>
         }
       </div>
-        <p>{JSON.stringify(constructorItems)}</p>
+        {/* <p>{JSON.stringify(constructorItems)}</p> */}
       <ConfirmOrder/>
     </section>
   )
