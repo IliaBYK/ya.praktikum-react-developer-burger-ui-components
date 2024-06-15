@@ -74,8 +74,8 @@ export default function BurgerConstructor() {
             key={uniqid()}
             handleClose={handleDelete}
             index={0}
-            moveCard={moveCard}
-            onDropHandler={handleDrop}/>
+            /* moveCard={moveCard}
+            onDropHandler={handleDrop} *//>
         }
         
         
@@ -87,10 +87,10 @@ export default function BurgerConstructor() {
             key={uniqid()} 
             handleClose={handleDelete}
             index={index}
-            moveCard={moveCard}
+            /* moveCard={moveCard} */
             position={undefined}
             isLocked={false}
-            onDropHandler={handleDrop}/>
+            /* onDropHandler={handleDrop} *//>
         )}
 
         {bun
@@ -103,8 +103,8 @@ export default function BurgerConstructor() {
             key={uniqid()}
             handleClose={handleDelete}
             index={-1}
-            moveCard={moveCard}
-            onDropHandler={handleDrop}/>
+            /* moveCard={moveCard}
+            onDropHandler={handleDrop} *//>
         }
       </div>
         <p>{JSON.stringify(constructorItems)}</p>

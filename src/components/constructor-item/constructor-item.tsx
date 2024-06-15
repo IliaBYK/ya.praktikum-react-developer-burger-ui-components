@@ -1,19 +1,17 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from "./constructor-item.module.css"
-//import { ConstructorItemIgridient } from "../../types/types"
+import { ConstructorItemIgridient } from "../../types/types"
 import { useDrag, useDrop } from "react-dnd"
 import { useRef } from "react"
-import { useAppDispatch } from "../../services/store";
-import { addConstructorItem } from "../../services/constructor/constructorItemsSlice";
 
-/* interface Props {
+interface Props {
   ingridient: ConstructorItemIgridient
   name: string
   position?: "top" | "bottom" | undefined
   isLocked?: boolean
   index: number
   handleClose: (id: string, index: number) => void
-} */
+}
 
 export default function ConstructorItem({
   ingridient,
@@ -22,13 +20,12 @@ export default function ConstructorItem({
   isLocked,
   index,
   handleClose,
-  moveCard,
-  onDropHandler
-  }/* : Props */) {
+  /* moveCard,
+  onDropHandler */
+  }: Props) {
   const { price, image, _id } = ingridient;
-  const dispatch = useAppDispatch()
 
-  const ref = useRef(null)
+  /* const ref = useRef(null)
   const [, drop] = useDrop({
     accept: ["main", "sauce"],
     collect: monitor => ({
@@ -74,7 +71,7 @@ export default function ConstructorItem({
       // to avoid expensive index searches.
       item.index = hoverIndex
     },
-  })
+  }) */
   const [/* { isDragging } */, drag] = useDrag({
     type: "main" || "sauce",
     item: () => {
@@ -85,12 +82,12 @@ export default function ConstructorItem({
     }),
   })
   //const opacity = isDragging ? 0 : 1
-  !position && drag(drop(ref))
+  //!position && drag(drop(ref))
 
   return (
     <div 
       className={styles.container} 
-      ref={position? drop : ref}>
+      /* ref={position? drop : ref} */>
       {position === undefined
         &&
         <button className={styles.container__btn}>
