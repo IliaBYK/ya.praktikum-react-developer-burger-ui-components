@@ -28,17 +28,24 @@ const constructorSlice = createSlice({
       if(action.payload.ingridient.type === "bun") {
         state.bun! = {...action.payload.ingridient}
       } else {
-        if(action.payload.start && action.payload.end) {
-          const new_core = state.constructorItems.slice()
-          const new_item = addUUID(action.payload.ingridient)
-          //const core = new_core.splice(action.payload.start!, 1)
-          new_core.splice(action.payload.start!, 0, new_item)
-          state.constructorItems = new_core.reverse()
-        } else {
-          state.constructorItems.push(action.payload.ingridient)
-        }
+        !action.payload.start && state.constructorItems.push(action.payload.ingridient)
       }
     },
+    setConstructorItem(state, action: PayloadAction<{
+      index: number | undefined,
+      start: number | undefined,
+      end: number | undefined,
+      ingridient: Ingridient
+    }>) {
+      const new_core = state.constructorItems.slice()
+      const new_ingridient_start = new_core.splice(action.payload.start!, 1)[0]
+      const new_ingridient_end = new_core.splice(action.payload.end!, 1)[0]
+      new_core.splice(action.payload.start!, 1)
+      new_core.splice(action.payload.end!, 1)
+      new_core.splice(action.payload.end!, 0, new_ingridient_start)
+      new_core.splice(action.payload.start!, 0, new_ingridient_end)
+      state.constructorItems = new_core
+  },
     deleteItem(state, { payload }) {
       const new_core = state.constructorItems.slice()
       new_core.splice(payload, 1)
@@ -50,6 +57,7 @@ const constructorSlice = createSlice({
 export const {
   clearConstructor,
   addConstructorItem,
+  setConstructorItem,
   deleteItem
 } = constructorSlice.actions;
 

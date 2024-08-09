@@ -5,7 +5,7 @@ import { ConstructorItemIgridient, Ingridient } from "../../types/types"
 import { useDrag, useDrop } from "react-dnd"
 import { useRef } from "react"
 import { useAppDispatch } from "../../services/store";
-import { addConstructorItem } from "../../services/constructor/constructorItemsSlice"
+import { addConstructorItem, setConstructorItem } from "../../services/constructor/constructorItemsSlice"
 
 interface Props {
   ingridient: ConstructorItemIgridient
@@ -74,7 +74,7 @@ export default function ConstructorItem({
         return
       }
 
-      dispatch(addConstructorItem({
+      dispatch(setConstructorItem({
         index: index, 
         start: dragIndex, 
         end: hoverIndex, 

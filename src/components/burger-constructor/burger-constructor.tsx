@@ -1,6 +1,5 @@
 import { useDrop } from "react-dnd";
 import uniqid from 'uniqid';
-import update from 'immutability-helper'
 import { Ingridient } from "../../types/types";
 import styles from "./burger-constructor.module.css"
 import ConfirmOrder from "../confirm-order/confirm-order"
@@ -10,7 +9,6 @@ import { addConstructorItem, deleteItem } from "../../services/constructor/const
 
 export default function BurgerConstructor() {
   const { constructorItems, bun } = useAppSelector(store => store.constructorItems)
-  const { ingridients } = useAppSelector(store => store.ingridients)
   const dispatch = useAppDispatch()
 
   const handleDelete = (index: number) => {
@@ -26,7 +24,6 @@ export default function BurgerConstructor() {
         end: undefined, 
         ingridient: item.ingridient
       }))
-      //handleDrop(item.ingridient);
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
@@ -54,10 +51,6 @@ export default function BurgerConstructor() {
             onDropHandler={/* handleDrop */() => {}}/>
         }
         
-        {/* <div 
-          className={`${styles.main__cards} ${isHover && styles.main__container_green}`}
-          ref={dropTarget}
-        > */}
           {constructorItems.map((item, index) => item.type !== "bun" 
             && 
             <ConstructorItem 
