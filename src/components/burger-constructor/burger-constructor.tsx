@@ -15,10 +15,24 @@ export default function BurgerConstructor() {
     dispatch(deleteItem(index))
   }
 
+  /* const onDrop = (
+    item: Ingridient,
+    index: number,
+    start: number,
+    end: number
+  ) => {
+    dispatch(addConstructorItem({
+      index: index, 
+      start: start, 
+      end: end, 
+      ingridient: item
+    }))
+  } */
+
   const [{isHover}, dropTarget] = useDrop({
     accept: ['bun', 'sauce', 'main'],
     drop(item: {ingridient: Ingridient, index: number}) {
-      dispatch(addConstructorItem({
+      item.index === undefined && dispatch(addConstructorItem({
         index: undefined, 
         start: undefined, 
         end: undefined, 

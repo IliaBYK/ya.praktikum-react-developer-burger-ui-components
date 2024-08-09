@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { ConstructorItemIgridient, Ingridient, InitialStateConstructor } from "../../types/types";
 import uniqid from 'uniqid';
 
@@ -19,37 +19,25 @@ const constructorSlice = createSlice({
       state.constructorItems = []
       state.bun = null
     },
-    addConstructorItem(state, action: PayloadAction<{
-      index: number | undefined,
-      start: number | undefined,
-      end: number | undefined,
-      ingridient: Ingridient
-    }>) {
-      if(action.payload.ingridient.type === "bun") {
-        state.bun! = {...action.payload.ingridient}
+    addConstructorItem(state, { payload }) {
+      if(payload.ingridient.type === "bun") {
+        state.bun! = {...payload.ingridient}
       } else {
-        !action.payload.start && state.constructorItems.push(action.payload.ingridient)
+        state.constructorItems.push(payload.ingridient)
       }
     },
-    setConstructorItem(state, action: PayloadAction<{
-      index: number | undefined,
-      start: number | undefined,
-      end: number | undefined,
-      ingridient: Ingridient
-    }>) {
-      const new_core = state.constructorItems.slice()
-      const new_ingridient_start = new_core.splice(action.payload.start!, 1)[0]
-      const new_ingridient_end = new_core.splice(action.payload.end!, 1)[0]
-      new_core.splice(action.payload.start!, 1)
-      new_core.splice(action.payload.end!, 1)
-      new_core.splice(action.payload.end!, 0, new_ingridient_start)
-      new_core.splice(action.payload.start!, 0, new_ingridient_end)
-      state.constructorItems = new_core
+    setConstructorItem(state, { payload }) {
+      const new_array = state.constructorItems.slice()
+      const new_ingridient_start = new_array.splice(payload.start!, 1)[0]
+      const new_ingridient_end = new_array.splice(payload.end!, 1)[0]
+      new_array.splice(payload.end!, 0, new_ingridient_start)
+      new_array.splice(payload.start!, 0, new_ingridient_end)
+      state.constructorItems = new_array
   },
     deleteItem(state, { payload }) {
-      const new_core = state.constructorItems.slice()
-      new_core.splice(payload, 1)
-      state.constructorItems = new_core
+      const new_array = state.constructorItems.slice()
+      new_array.splice(payload, 1)
+      state.constructorItems = new_array
     },
   },
 });
