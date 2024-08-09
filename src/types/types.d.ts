@@ -38,13 +38,10 @@ export type InitialStateTab =  {
     currentTab: string;
 }
 
-export type InitialStateOrderNumber =  {
-    orderNumber: number;
-}
-
 export type InitialStateOrderCost =  {
-  orderCost: number;
-  order: ConstructorItemIgridient[]
+  orderName: string;
+  orderNumber: number
+  orderCost: number
 }
 
 export interface Res extends Response {

@@ -7,20 +7,22 @@ import OrderDetails from "../order-details/order-details"
 import { useAppDispatch, useAppSelector } from "../../services/store"
 import { clearConstructor } from "../../services/constructor/constructorItemsSlice"
 import { setCost } from "../../services/constructor/orderCostSlice"
+import { createOrder } from "../../services/API"
+import { ConstructorItemIgridient } from "../../types/types"
 
 export default function ConfirmOrder() {
   const dispatch = useAppDispatch()
   const [isOpen, setIsOpen] = useState(false);
-  //const [cost, setCost] = useState(0)
 
   const { constructorItems, bun } = useAppSelector(store => store.constructorItems)
-  const { orderCost } = useAppSelector(store => store.orderCost)
+  const { orderCost, orderNumber } = useAppSelector(store => store.orderCost)
 
   useEffect(() => {
     dispatch(setCost({constructorItems, bun}))
   }, [bun, constructorItems, dispatch])
 
   const openPopup = () => {
+    createOrder(dispatch, [(bun?._id as string), ...constructorItems.map( item => item._id)])
     setIsOpen(true)
   }
 
@@ -55,7 +57,7 @@ export default function ConfirmOrder() {
       </footer>
       {isOpen
         &&
-        <Modal close={closePopup} title="123456" confirm={true}>
+        <Modal close={closePopup} title={orderNumber.toString()} confirm={true}>
           <OrderDetails />
         </Modal>
       }

@@ -1,11 +1,11 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"
-import type { Identifier, XYCoord } from 'dnd-core'
+import type { XYCoord } from 'dnd-core'
 import styles from "./constructor-item.module.css"
 import { ConstructorItemIgridient, Ingridient } from "../../types/types"
 import { useDrag, useDrop } from "react-dnd"
 import { useRef } from "react"
 import { useAppDispatch } from "../../services/store";
-import { addConstructorItem, setConstructorItem } from "../../services/constructor/constructorItemsSlice"
+import { setConstructorItem } from "../../services/constructor/constructorItemsSlice"
 
 interface Props {
   ingridient: ConstructorItemIgridient
@@ -14,8 +14,6 @@ interface Props {
   isLocked?: boolean
   index: number
   handleClose: (index: number) => void
-  moveCard: (dragIndex: number, hoverIndex: number) => void
-  onDropHandler: (item: Ingridient) => void
 }
 
 export default function ConstructorItem({
@@ -25,25 +23,15 @@ export default function ConstructorItem({
   isLocked,
   index,
   handleClose,
-  moveCard,
-  onDropHandler
   }: Props) {
   const { price, image, uuid } = ingridient;
 
   const ref = useRef(null)
   const dispatch = useAppDispatch()
 
-  /* const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-      setCards((prevCards: Item[]) =>
-        update(prevCards, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, prevCards[dragIndex] as Item],
-          ],
-        }),
-      )
-    }, []) */
-
+  //к сожалению пока не добавил реализацию, как в документации dnd
+  //для перетаскивания элементов нужно немного выше перетаскиваемый ингридиент напривалять,
+  //иначе ничего не произойдет
   const [{isHover}, dropTarget] = useDrop({
     accept: ['sauce', 'main'],
     drop(item: {ingridient: Ingridient, index: number}, monitor) {
@@ -82,7 +70,6 @@ export default function ConstructorItem({
       }))
 
       item.index = hoverIndex
-      //onDropHandler(item.ingridient);
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
