@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ConstructorItemIgridient, InitialStateOrderCost } from "../../types/types";
 
 const initialState: InitialStateOrderCost = {
-  orderCost: 0
+  orderCost: 0,
+  order: []
 }
 
 const orderCostSlice = createSlice({
@@ -11,8 +12,11 @@ const orderCostSlice = createSlice({
   reducers: {
     setCost: (state, { payload }) => {
       state.orderCost = payload.constructorItems.reduce((acc: number, item: ConstructorItemIgridient) => {
-        return acc += item.price * item.qty!
-      }, 0) + (payload.bun?.qty! ? payload.bun?.qty! * payload.bun.price : 0)
+        return acc += item.price/*  * item.qty! */
+      }, 0) + (payload.bun ? 2 * payload.bun.price : 0)
+    },
+    setOrder: (state, { payload }) => {
+      state.order = payload
     }
   }
 })

@@ -14,7 +14,7 @@ export type Ingridient = {
 }
 
 export interface ConstructorItemIgridient extends Ingridient {
-  qty?: number = 0
+  uuid?: string
 }
 
 export type InitialStateIngridients =  {
@@ -43,7 +43,8 @@ export type InitialStateOrderNumber =  {
 }
 
 export type InitialStateOrderCost =  {
-    orderCost: number;
+  orderCost: number;
+  order: ConstructorItemIgridient[]
 }
 
 export interface Res extends Response {

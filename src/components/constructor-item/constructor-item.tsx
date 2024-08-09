@@ -1,8 +1,11 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"
+import type { Identifier, XYCoord } from 'dnd-core'
 import styles from "./constructor-item.module.css"
-import { ConstructorItemIgridient } from "../../types/types"
+import { ConstructorItemIgridient, Ingridient } from "../../types/types"
 import { useDrag, useDrop } from "react-dnd"
 import { useRef } from "react"
+import { useAppDispatch } from "../../services/store";
+import { addConstructorItem } from "../../services/constructor/constructorItemsSlice"
 
 interface Props {
   ingridient: ConstructorItemIgridient
@@ -10,7 +13,9 @@ interface Props {
   position?: "top" | "bottom" | undefined
   isLocked?: boolean
   index: number
-  handleClose: (id: string, index: number) => void
+  handleClose: (index: number) => void
+  moveCard: (dragIndex: number, hoverIndex: number) => void
+  onDropHandler: (item: Ingridient) => void
 }
 
 export default function ConstructorItem({
@@ -20,74 +25,86 @@ export default function ConstructorItem({
   isLocked,
   index,
   handleClose,
-  /* moveCard,
-  onDropHandler */
+  moveCard,
+  onDropHandler
   }: Props) {
-  const { price, image, _id } = ingridient;
+  const { price, image, uuid } = ingridient;
 
-  /* const ref = useRef(null)
-  const [, drop] = useDrop({
-    accept: ["main", "sauce"],
-    collect: monitor => ({
-      isHover: monitor.isOver()
-    }),
-    drop(item, monitor) {
+  const ref = useRef(null)
+  const dispatch = useAppDispatch()
+
+  /* const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+      setCards((prevCards: Item[]) =>
+        update(prevCards, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, prevCards[dragIndex] as Item],
+          ],
+        }),
+      )
+    }, []) */
+
+  const [{isHover}, dropTarget] = useDrop({
+    accept: ['sauce', 'main'],
+    drop(item: {ingridient: Ingridient, index: number}, monitor) {
       if (!ref.current) {
         return
       }
-      //dispatch(addConstructorItem(item))
-      onDropHandler(item)
       const dragIndex = item.index
       const hoverIndex = index
-      // Don't replace items with themselves
+
       if (dragIndex === hoverIndex) {
         return
       }
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current.getBoundingClientRect()
-      // Get vertical middle
+
+      const hoverBoundingRect = (ref.current as any).getBoundingClientRect()
+
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
+
       const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
+
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
+
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }
-      // Dragging upwards
+
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return
       }
-      // Time to actually perform the action
-      moveCard(dragIndex, hoverIndex)
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
+
+      dispatch(addConstructorItem({
+        index: index, 
+        start: dragIndex, 
+        end: hoverIndex, 
+        ingridient: item.ingridient
+      }))
+
       item.index = hoverIndex
+      //onDropHandler(item.ingridient);
     },
-  }) */
-  const [/* { isDragging } */, drag] = useDrag({
-    type: "main" || "sauce",
-    item: () => {
-      return { _id, index }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  })
-  //const opacity = isDragging ? 0 : 1
-  //!position && drag(drop(ref))
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+      handlerId: monitor.getHandlerId()
+    })
+  });
+  
+  const [{isDragging}, dragRef] = useDrag({
+    type: ingridient?.type ?? "none",
+    item: {ingridient, index},
+    collect: monitor => ({
+      isDragging: monitor.isDragging()
+    })
+  });
+  const opacity = isDragging ? 0 : 1
+  !position && dragRef(dropTarget(ref))
 
   return (
     <div 
-      className={styles.container} 
-      /* ref={position? drop : ref} */>
+      className={styles.container}
+      style={{ opacity }}
+      ref={position ? dropTarget : ref}>
       {position === undefined
         &&
         <button className={styles.container__btn}>
@@ -100,7 +117,7 @@ export default function ConstructorItem({
         price={price}
         thumbnail={image}
         extraClass={styles.container__item}
-        handleClose={() => handleClose(_id, index)}
+        handleClose={() => handleClose(index)}
       />
     </div>
   )

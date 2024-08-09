@@ -21,21 +21,21 @@ export default function Card({ ingridient }: Props) {
 
   const [, dragRef] = useDrag({
     type: type,
-    item: {...ingridient}
+    item: {ingridient},
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+    })
   })
 
   useEffect(() => {
     if(type === "bun") {
-      bun?._id === _id ? setCounter(bun?.qty!) : setCounter(0)
+      bun?._id === _id ? setCounter(2) : setCounter(0)
     }
-    else constructorItems.find(item => item._id === _id)
-    ?
-    constructorItems.map(item => {
-      return item._id === _id && setCounter(item.qty!)
-    })
-    :
-    setCounter(0)
-  }, [constructorItems, _id, type, bun?.qty, bun?._id])
+    else if(constructorItems.find(item => item._id === _id)) {
+      const count = constructorItems.filter(item => item._id === _id)
+      count && setCounter(count.length)
+    } else setCounter(0)
+  }, [constructorItems, _id, type, bun?._id])
 
   const openPopup = () => {
     setIsOpen(true)
@@ -48,7 +48,7 @@ export default function Card({ ingridient }: Props) {
   return (
     <>
       <div className={`${styles.card}`} onClick={openPopup} ref={dragRef}>
-        <Counter count={counter} size="default" extraClass="m-1" />
+        {counter ? <Counter count={counter} size="default" extraClass="m-1" /> : null}
         <img className={`${styles.card__img} mb-1`} src={ingridient.image} alt="Изображение ингридиента" />
         <div className={`${styles.card__price}`}>
           <span className="text text_type_digits-default mr-2">{ingridient.price}</span>

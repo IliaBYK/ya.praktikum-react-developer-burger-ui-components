@@ -6,64 +6,40 @@ import styles from "./burger-constructor.module.css"
 import ConfirmOrder from "../confirm-order/confirm-order"
 import ConstructorItem from "../constructor-item/constructor-item"
 import { useAppDispatch, useAppSelector } from "../../services/store";
-import { useCallback, useState } from "react";
-import { addConstructorItem, decreaseItem } from "../../services/constructor/constructorItemsSlice";
+import { addConstructorItem, deleteItem } from "../../services/constructor/constructorItemsSlice";
 
 export default function BurgerConstructor() {
   const { constructorItems, bun } = useAppSelector(store => store.constructorItems)
   const { ingridients } = useAppSelector(store => store.ingridients)
   const dispatch = useAppDispatch()
-  const [draggedElements, setDraggedElements] = useState<Ingridient[]>([]);
 
-  const handleDrop = (item: Ingridient) => {
-    const bun = draggedElements.find(item => item.type === "bun")
-
-    if(item.type === "bun" && !bun) {
-      setDraggedElements([
-        ...ingridients.filter(element => element._id === item._id),
-        ...draggedElements,
-      ]);
-    } else if(item.type === "bun" && bun) draggedElements.splice(draggedElements.indexOf(bun!), 1, item)
-
-    else setDraggedElements([
-      ...draggedElements,
-      ...ingridients.filter(element => element._id === item._id)
-    ]);
-  };
-
-  const handleDelete = (id: string, index: number) => {
-    draggedElements.splice(index, 1)
-
-    dispatch(decreaseItem(id))
+  const handleDelete = (index: number) => {
+    dispatch(deleteItem(index))
   }
-
-  const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-      setDraggedElements((prevCards) =>
-        update(prevCards, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, prevCards[dragIndex]],
-          ],
-        }),
-      )
-    }, [])
 
   const [{isHover}, dropTarget] = useDrop({
     accept: ['bun', 'sauce', 'main'],
-    drop(item: Ingridient) {
-      handleDrop(item);
-      dispatch(addConstructorItem(item))
+    drop(item: {ingridient: Ingridient, index: number}) {
+      dispatch(addConstructorItem({
+        index: undefined, 
+        start: undefined, 
+        end: undefined, 
+        ingridient: item.ingridient
+      }))
+      //handleDrop(item.ingridient);
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
+      handlerId: monitor.getHandlerId()
     })
   });
 
   return (
     <section className={`${styles.main}`}>
       <div 
-        className={`${styles.main__container} mb-10 pt-25 pr-4 pl-4 ${isHover && styles.main__container_green}`} 
-        ref={dropTarget}>
+        className={`${styles.main__container} mb-10 pt-25 pr-4 pl-4 ${isHover && styles.main__container_green}`}
+        ref={dropTarget}
+      >
         {bun
           && 
           <ConstructorItem 
@@ -74,24 +50,28 @@ export default function BurgerConstructor() {
             key={uniqid()}
             handleClose={handleDelete}
             index={0}
-            /* moveCard={moveCard}
-            onDropHandler={handleDrop} *//>
+            moveCard={/* moveCard */ () => {}}
+            onDropHandler={/* handleDrop */() => {}}/>
         }
         
-        
-        {draggedElements.map((item, index) => item.type !== "bun" 
-          && 
-          <ConstructorItem 
-            name={item.name} 
-            ingridient={item} 
-            key={uniqid()} 
-            handleClose={handleDelete}
-            index={index}
-            /* moveCard={moveCard} */
-            position={undefined}
-            isLocked={false}
-            /* onDropHandler={handleDrop} *//>
-        )}
+        {/* <div 
+          className={`${styles.main__cards} ${isHover && styles.main__container_green}`}
+          ref={dropTarget}
+        > */}
+          {constructorItems.map((item, index) => item.type !== "bun" 
+            && 
+            <ConstructorItem 
+              name={item.name} 
+              ingridient={item} 
+              key={uniqid()} 
+              handleClose={handleDelete}
+              index={index}
+              moveCard={/* moveCard */ () => {}}
+              position={undefined}
+              isLocked={false}
+              onDropHandler={/* handleDrop */ () => {}}/>
+          )}
+        {/* </div> */}
 
         {bun
           && 
@@ -103,12 +83,13 @@ export default function BurgerConstructor() {
             key={uniqid()}
             handleClose={handleDelete}
             index={-1}
-            /* moveCard={moveCard}
-            onDropHandler={handleDrop} *//>
+            moveCard={/* moveCard */ () => {}}
+            onDropHandler={/* handleDrop */ () => {}}/>
         }
       </div>
-        {/* <p>{JSON.stringify(constructorItems)}</p> */}
+        {constructorItems.map(item => <p key={uniqid()}>{item.name}</p>)}
       <ConfirmOrder/>
     </section>
   )
 }
+

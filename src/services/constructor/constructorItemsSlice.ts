@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { InitialStateConstructor } from "../../types/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ConstructorItemIgridient, Ingridient, InitialStateConstructor } from "../../types/types";
+import uniqid from 'uniqid';
 
 const initialState: InitialStateConstructor = {
   bun: null,
@@ -7,6 +8,8 @@ const initialState: InitialStateConstructor = {
   constructorItemsRequest: false,
   constructorItemsFailed: false,
 };
+
+const addUUID = (ingredient: Ingridient):ConstructorItemIgridient => ({...ingredient, uuid:uniqid()})
 
 const constructorSlice = createSlice({
   name: 'constructorItems',
@@ -16,42 +19,38 @@ const constructorSlice = createSlice({
       state.constructorItems = []
       state.bun = null
     },
-    addConstructorItem(state, { payload }) {
-      if(payload.type === "bun") {
-        state.bun! = {...payload, qty: 2}
+    addConstructorItem(state, action: PayloadAction<{
+      index: number | undefined,
+      start: number | undefined,
+      end: number | undefined,
+      ingridient: Ingridient
+    }>) {
+      if(action.payload.ingridient.type === "bun") {
+        state.bun! = {...action.payload.ingridient}
       } else {
-        const itemIndex = state.constructorItems.findIndex(item => item._id === payload._id)
-
-        if(itemIndex >= 0) state.constructorItems[itemIndex].qty! += 1
-        else  state.constructorItems.push({...payload, qty: 1})
+        if(action.payload.start && action.payload.end) {
+          const new_core = state.constructorItems.slice()
+          const new_item = addUUID(action.payload.ingridient)
+          //const core = new_core.splice(action.payload.start!, 1)
+          new_core.splice(action.payload.start!, 0, new_item)
+          state.constructorItems = new_core.reverse()
+        } else {
+          state.constructorItems.push(action.payload.ingridient)
+        }
       }
     },
-    increaseItem(state, { payload }) {
-      state.constructorItems.map(item => item._id === payload._id ? item.qty! += 1 : item)
+    deleteItem(state, { payload }) {
+      const new_core = state.constructorItems.slice()
+      new_core.splice(payload, 1)
+      state.constructorItems = new_core
     },
-    decreaseItem(state, { payload }) {
-      /* if(state.constructorItems.find(item => item._id === payload)?.qty! > 1) { */
-        // eslint-disable-next-line array-callback-return
-        state.constructorItems.map(item => {
-          if(item._id === payload) {
-            item.qty! -= 1
-            item.qty! === 0 && state.constructorItems.splice(state.constructorItems.indexOf(item), 1)
-          }
-        })
-      //} else state.constructorItems = state.constructorItems.filter(item => item._id !== payload)
-    },
-    /* deleteItem(state, { payload }) {
-      state.constructorItems = state.constructorItems.filter(item => item._id !== payload)
-    }, */
   },
 });
 
 export const {
   clearConstructor,
   addConstructorItem,
-  //increaseItem,
-  decreaseItem,
-  //deleteItem
+  deleteItem
 } = constructorSlice.actions;
 
 export default constructorSlice.reducer;
